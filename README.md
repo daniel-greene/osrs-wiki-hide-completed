@@ -2,7 +2,7 @@
 
 A userscript that adds a "Hide completed" toggle to the [Optimal Quest Guide](https://oldschool.runescape.wiki/w/Optimal_quest_guide) on the OSRS Wiki. After looking up your username via WikiSync, completed quests are highlighted green — this script lets you hide those rows so you only see what's left.
 
-<img width="1315" height="569" alt="image" src="https://github.com/user-attachments/assets/b63fa8bb-856b-4b44-8cb7-50a0d7da637c" />
+<img width="1315" height="569" alt="image" src="https://github.com/user-attachments/assets/1c869a76-7d74-4c32-a8dc-fde85685e1cf" />
 
 ## Install
 
@@ -16,7 +16,7 @@ A userscript that adds a "Hide completed" toggle to the [Optimal Quest Guide](ht
 
 ## How it works
 
-WikiSync highlights completed quest rows green via inline styles. This script watches the quest table for those changes using a `MutationObserver` and adds a toggle button above the table. Clicking "Hide completed" sets `display: none` on green rows. Your show/hide preference is saved to `localStorage` and persists across page loads.
+WikiSync adds a `highlight-on` class to completed quest rows after a username lookup. This script watches the quest table for class changes using a `MutationObserver` and adds a toggle button above the table. Clicking "Hide completed" sets `display: none` on completed rows. Your show/hide preference is saved to `localStorage` and persists across page loads.
 
 Also works on the [Ironman](https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman) and [F2P](https://oldschool.runescape.wiki/w/Optimal_quest_guide/Free-to-play) variants.
 
