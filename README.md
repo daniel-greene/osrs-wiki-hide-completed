@@ -12,7 +12,7 @@ A userscript that adds a "Hide completed" toggle to the [Optimal Quest Guide](ht
 
 ## Requirements
 
-- [WikiSync](https://oldschool.runescape.wiki/w/RuneScape:WikiSync) RuneLite plugin — this is what uploads your quest completion data to the wiki. Without it, there's nothing to hide.
+- [WikiSync](https://oldschool.runescape.wiki/w/RuneScape:WikiSync) RuneLite plugin.
 
 ## How it works
 
