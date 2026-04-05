@@ -1,6 +1,6 @@
 # OSRS Wiki — Hide Completed Quests
 
-A userscript that adds a "Hide completed" toggle to the [Optimal Quest Guide](https://oldschool.runescape.wiki/w/Optimal_quest_guide) on the OSRS Wiki. After looking up your username via WikiSync, completed quests are highlighted green — this script lets you hide those rows so you only see what's left.
+A userscript that adds a "Hide completed" toggle to the [Optimal Quest Guide](https://oldschool.runescape.wiki/w/Optimal_quest_guide) on the OSRS Wiki.
 
 <img width="1315" height="569" alt="image" src="https://github.com/user-attachments/assets/1c869a76-7d74-4c32-a8dc-fde85685e1cf" />
 
