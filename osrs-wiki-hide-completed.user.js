@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         OSRS Optimal Quest Guide — Hide Completed
-// @namespace    https://github.com/YOUR_USERNAME/osrs-quest-tracker
+// @namespace    https://github.com/daniel-greene/osrs-wiki-hide-completed
 // @version      1.0.0
 // @description  Adds a toggle to hide WikiSync-completed quests on the Optimal Quest Guide
-// @author       YOUR_USERNAME
+// @author       daniel-greene
 // @license      Unlicense
 // @match        https://oldschool.runescape.wiki/w/Optimal_quest_guide*
 // @grant        none
