@@ -12,9 +12,9 @@
 /**
  * This userscript integrates with the OSRS Wiki's existing WikiSync gadget.
  * After performing a WikiSync username lookup on the Optimal Quest Guide page,
- * completed quests are highlighted green by the wiki's own JavaScript. This
- * script detects those highlighted rows and provides a button to hide them,
- * letting you focus on what's left to do.
+ * completed quests are marked with the "highlight-on" class by the wiki's own
+ * JavaScript. This script detects those rows and provides a button to hide
+ * them, letting you focus on what's left to do.
  *
  * Requirements:
  *   - Tampermonkey / Violentmonkey / Greasemonkey
@@ -38,49 +38,6 @@
 
   function saveHidden(val) {
     localStorage.setItem(HIDE_KEY, String(!!val));
-  }
-
-  // ---- Colour detection ----
-  // WikiSync highlights completed quest rows with a green background colour
-  // applied via inline styles. We check for green-dominant RGB values to
-  // detect this, using a threshold that avoids false positives from the
-  // wiki's neutral beige/grey/blue palette.
-  function isGreenish(color) {
-    if (!color) return false;
-
-    const rgb = color.match(
-      /rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
-    );
-    if (rgb) {
-      const r = parseInt(rgb[1], 10);
-      const g = parseInt(rgb[2], 10);
-      const b = parseInt(rgb[3], 10);
-      return g > r + 20 && g > b + 20 && g > 40;
-    }
-
-    if (color.charAt(0) === "#" && color.length >= 7) {
-      const r = parseInt(color.substring(1, 3), 16);
-      const g = parseInt(color.substring(3, 5), 16);
-      const b = parseInt(color.substring(5, 7), 16);
-      return g > r + 20 && g > b + 20 && g > 40;
-    }
-
-    return false;
-  }
-
-  function isRowCompleted(row) {
-    // Check inline styles first (cheap) before falling back to computed styles
-    if (isGreenish(row.style.backgroundColor)) return true;
-
-    const cells = row.querySelectorAll("td");
-    for (let i = 0; i < cells.length; i++) {
-      if (isGreenish(cells[i].style.backgroundColor)) return true;
-    }
-
-    // Fall back to computed style on the row only (not every cell)
-    if (isGreenish(getComputedStyle(row).backgroundColor)) return true;
-
-    return false;
   }
 
   // ---- Find the quest table(s) ----
@@ -111,7 +68,7 @@
 
   // ---- State ----
   let hideCompleted = loadHidden();
-  let refreshing = false; // guard against observer feedback loop
+  let refreshing = false;
 
   // ---- Styles (uses wiki CSS custom properties for theme compatibility) ----
   const style = document.createElement("style");
@@ -198,7 +155,7 @@
     let done = 0;
 
     for (let i = 0; i < allRows.length; i++) {
-      const completed = isRowCompleted(allRows[i]);
+      const completed = allRows[i].classList.contains("highlight-on");
       if (completed) done++;
       allRows[i].style.display = hideCompleted && completed ? "none" : "";
     }
@@ -213,7 +170,6 @@
       progressFill.style.width = `${((done / total) * 100).toFixed(1)}%`;
     }
 
-    // Allow the observer to settle before re-enabling
     requestAnimationFrame(() => {
       refreshing = false;
     });
@@ -229,8 +185,8 @@
   });
 
   // ---- Observe WikiSync DOM mutations ----
-  // WikiSync modifies row/cell styles after its async API call.
-  // We debounce and guard against our own mutations triggering a loop.
+  // WikiSync adds/removes the "highlight-on" class on rows after its async
+  // API call. We watch for class changes and refresh when detected.
   let debounceTimer;
 
   const observer = new MutationObserver(() => {
@@ -242,9 +198,8 @@
   questTables.forEach((table) => {
     observer.observe(table, {
       attributes: true,
-      attributeFilter: ["style", "class"],
+      attributeFilter: ["class"],
       subtree: true,
-      childList: true,
     });
   });
 })();
